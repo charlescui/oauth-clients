@@ -50,7 +50,7 @@ A simple to use plugin for sync messages(or images) from your website to SNS web
 		
 		require 'oauth_clients'		
 		#setting up oauth clients
-		OAuthClients::Provider.globle_config = YAML.load("#{RAILS_ROOT}/config/oauth-clients.yml")
+		OAuthClients::Provider.global_config = YAML.load("#{RAILS_ROOT}/config/oauth-clients.yml")
 
 		#setting up omini-auth
 		OAuthClients::Provider.all.each do |provider|
@@ -88,6 +88,7 @@ A simple to use plugin for sync messages(or images) from your website to SNS web
 		auth_info = User.current.auth_info	
 		client = OAuthClients::Provider[auth_info.provider].client(JSON.parse(auth_info.data))
 		client.say('hello','image_url' => YOUR_IMAGE_URL)
+		client.friends##返回好友网站ID数组(目前支持tsina[所关注的人,follows])
 
 
 #####5. Optional: use resque or delyed_job, so that you can put #3 in to background
