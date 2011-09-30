@@ -28,7 +28,7 @@ module OAuthClients::Core
     end
     
     def access_token
-      @access_token ||= ::OAuth::AccessToken.new(consumer, credentials["token"], credentials["secret"])
+      @access_token ||= ::OAuth::AccessToken.new(consumer, credentials[:token], credentials[:secret])
     end
     
     def consumer
