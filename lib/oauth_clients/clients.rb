@@ -9,14 +9,13 @@ module OAuthClients::Clients
           :request_token_path => '/oauth/request_token',
           :access_token_path  => '/oauth/access_token',
           :authorize_path     => '/oauth/authorize',
-          :realm              => provider.config["realm"]
+          :realm              => provider.config[:realm]
         }
     end
     
     def say(content,options={})
-      options.merge!(:status => content)
-      puts options.inspect
-      if path = options['image_path']||options['image_url']
+      options = options.to_options.merge!(:status => content)
+      if path = options[:image_path]||options[:image_url]
         stream = open(path)
         if stream.is_a?(StringIO)
           stream = OAuthClients::Core::StringIOWrapper.new(path, stream)
@@ -25,6 +24,17 @@ module OAuthClients::Clients
         oauth_upload("http://api.t.sina.com.cn/statuses/upload.json", options.to_options)
       else
         self.access_token.post("http://api.t.sina.com.cn/statuses/update.json", options)
+      end
+    end
+
+    def	friends(cursor = -1)
+      rsp = self.access_token.request(:get, "http://api.t.sina.com.cn/friends/ids.json?cursor=#{cursor}&count=5000")
+      data = ActiveSupport::JSON.decode(rsp.body)      
+      uids = data["ids"]
+      if data["next_cursor"] != 0
+        uids += self.friends(cursor+1)["ids"]
+      else
+        return uids
       end
     end
   end
@@ -40,7 +50,7 @@ module OAuthClients::Clients
           :request_token_path => '/service/auth/request_token',
           :access_token_path  => '/service/auth/access_token',
           :authorize_path     => '/service/auth/authorize',
-          :realm              => provider.config["realm"]
+          :realm              => provider.config[:realm]
         }
         
     end
@@ -62,7 +72,7 @@ module OAuthClients::Clients
     end
     
     def say(content,options={})
-      hash =  {"access_token" =>  credentials["token"],
+      hash =  {"access_token" =>  credentials[:token],
               "method" => 'status.set',
               "call_id" => 1,
               "v" =>"1.0",
@@ -90,7 +100,7 @@ module OAuthClients::Clients
           :http_method         => :get,
           :scheme              => :query_string,
           :nonce               => nonce,
-          :realm               => provider.config["realm"]
+          :realm               => provider.config[:realm]
         }
         
     end

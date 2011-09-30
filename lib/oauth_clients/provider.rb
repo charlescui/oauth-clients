@@ -1,23 +1,23 @@
 module OAuthClients
   class Provider
-    def self.globle_config= (config)
-      @globle_config = config
+    def self.global_config= (config)
+      @global_config = config.to_options
       @all = nil
     end
     
-    def self.globle_config
-      if @globle_config.nil?
-        raise 'OAuthClients::Provider.globle_config = {YOUR_CONFIG_HASH} first!'
+    def self.global_config
+      if @global_config.nil?
+        raise 'OAuthClients::Provider.global_config = {YOUR_CONFIG_HASH} first!'
       end
-      @globle_config
+      @global_config
     end
     
     def self.all
-      @all||=globle_config.except("base").map{|k,v| self.new(k,globle_config["base"].merge(v))}.sort        
+      @all||=global_config.except(:base).map{|k,v| self.new(k,global_config[:base].merge(v).to_options)}.sort        
     end
   
     def self.[](key)
-      all.find{|e|e.name == key}
+      all.find{|e|e.name == key.to_sym}
     end
   
     attr_accessor :name,:config
@@ -28,23 +28,23 @@ module OAuthClients
     end
     
     def key
-      @config["key"]
+      @config[:key]
     end
     
     def secret
-      @config["secret"]
+      @config[:secret]
     end
     
     def options
-      @config["options"]
+      @config[:options]
     end
     
     def order
-      @config["order"]||0
+      @config[:order]||0
     end
     
     def client(credentials)
-      @client = "OAuthClients::Clients::#{self.name.capitalize}".constantize.new(self,credentials)
+      @client = "OAuthClients::Clients::#{self.name.capitalize}".constantize.new(self,credentials.to_options)
     end
     
     def <=>(other)
