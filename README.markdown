@@ -29,25 +29,25 @@ A simple to use plugin for sync messages(or images) from your website to SNS web
 
 ##### 1. Setting up a yml file(config/auth-clients.yml)
   
-OAuthClients::Provider.global_config = {
-  "base" => {
-    "realm" => "http://www.yourwebsite.com"
-  },
-  "tsina" => {
-    "order" => 1,
-    "key" => "your tsina app key",
-    "secret" => "your tsina app secret"
-  },
-  "renren" => {
-    "order" => 2,
-    "key" => "your renren app key",
-    "secret" => "your renren app secret",
-    "options" =>
-    {
-      :scope => 'publish_feed,status_update'
-    }
-  }
-}
+      OAuthClients::Provider.global_config = {
+        "base" => {
+          "realm" => "http://www.yourwebsite.com"
+        },
+        "tsina" => {
+          "order" => 1,
+          "key" => "your tsina app key",
+          "secret" => "your tsina app secret"
+        },
+        "renren" => {
+          "order" => 2,
+          "key" => "your renren app key",
+          "secret" => "your renren app secret",
+          "options" =>
+          {
+            :scope => 'publish_feed,status_update'
+          }
+        }
+      }
 
 #####2. create a file with the folloing content(config/initializers/oauth-clients-initializer.rb)
 
