@@ -1,0 +1,4 @@
+OauthClients
+=============
+# Generate config file to Rails.root/config/oauth_clients.yml
+  rails generate oauth_clients:install [auth_clients.rb]

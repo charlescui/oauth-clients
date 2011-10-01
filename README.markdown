@@ -12,6 +12,13 @@ A simple to use plugin for sync messages(or images) from your website to SNS web
 1. 将第三方网站的credentials保存起来
 2. 当用户在你网站上操作时， 他(她)希望在后台自动将这个操作同步到自己的SNS网站上。
 
+## 安装
+
+* rails plugin install git@github.com:charlescui/oauth-clients.git
+* rails g oauth_clients:install [oauth_clients.rb]
+	默认安装oauth_clients.rb到config/initializers/目录，可以通过更改oauth_clients:install后的参数改变配置文件名称
+* 修改配置文件中的key以及secret等为你自己的配置
+
 ## 功能
 
 * 支持网站 t.sina,t.qq,  douban, renren
